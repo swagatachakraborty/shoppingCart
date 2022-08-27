@@ -21,7 +21,7 @@ public class ShoppingCartTest {
     public void shouldAddMultipleDoveSoapToTheCart() {
         cart.add(doveSoap, 5);
 
-        assertEquals(199.95, cart.getPrice(), .001);
+        assertEquals(199.95, cart.getPrice());
     }
 
     @Test
@@ -29,6 +29,22 @@ public class ShoppingCartTest {
         cart.add(doveSoap, 5);
         cart.add(doveSoap, 3);
 
-        assertEquals(319.92, cart.getPrice(), .001);
+        assertEquals(319.92, cart.getPrice());
+    }
+
+    @Test
+    public void shouldGetRoundedUpPriceUpTo2DecimalPoints() {
+        Product pencil = new Product("Pencil", 5.564);
+        cart.add(pencil);
+
+        assertEquals(5.56, cart.getPrice());
+    }
+
+    @Test
+    public void shouldGetRoundedUpPriceUpTo2DecimalPoints_RoundUpToNextHighestNumber() {
+        Product pencil = new Product("Pencil", 5.565);
+        cart.add(pencil);
+
+        assertEquals(5.57, cart.getPrice());
     }
 }

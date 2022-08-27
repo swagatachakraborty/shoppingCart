@@ -13,11 +13,15 @@ public class ShoppingCart {
     }
 
     public double getPrice() {
-        return products.stream()
+        Double cartPrice = products.stream()
                 .map(p -> p.getProduct().getPrice() * p.getQuantity())
                 .reduce(0d, Double::sum);
+        return roundUp(cartPrice);
     }
 
+    private double roundUp(Double cartPrice) {
+        return Math.round(cartPrice * 100) / 100d;
+    }
 
     public void add(Product product, Integer quantity) {
         Optional<ProductQuantityMap> item = products.stream()
