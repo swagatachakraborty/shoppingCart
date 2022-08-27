@@ -2,6 +2,7 @@ package javax;
 
 import org.junit.Test;
 
+import javax.model.OrderSummary;
 import javax.model.Product;
 import javax.model.ProductQuantityMap;
 import javax.service.PricingService;
@@ -110,5 +111,27 @@ public class ShoppingCartTest {
         assertEquals(doveSoap, productsInCart.get(1).getProduct());
         assertEquals(doveSoapPrice, productsInCart.get(1).getProduct().getPrice());
         assertEquals(2, productsInCart.get(1).getQuantity());
+    }
+
+    @Test
+    public void shouldCompleteOrderSummary() {
+        ShoppingCart newCart = new ShoppingCart(new PricingService(12.5));
+        newCart.add(doveSoap, 2);
+        newCart.add(axeDeo, 2);
+        OrderSummary orderSummary = newCart.getOrderSummary();
+
+        assertEquals(314.96, orderSummary.getPricingSummary().getCartPrice());
+        assertEquals(279.96, orderSummary.getPricingSummary().getTotalProductPrice());
+        assertEquals(35.00, orderSummary.getPricingSummary().getTotalSalesTax());
+
+        assertEquals(2, orderSummary.getProducts().size());
+
+        assertEquals(axeDeo, orderSummary.getProducts().get(0).getProduct());
+        assertEquals(axeDeoPrice, orderSummary.getProducts().get(0).getProduct().getPrice());
+        assertEquals(2, orderSummary.getProducts().get(0).getQuantity());
+
+        assertEquals(doveSoap, orderSummary.getProducts().get(1).getProduct());
+        assertEquals(doveSoapPrice, orderSummary.getProducts().get(1).getProduct().getPrice());
+        assertEquals(2, orderSummary.getProducts().get(1).getQuantity());
     }
 }

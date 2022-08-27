@@ -1,5 +1,6 @@
 package javax;
 
+import javax.model.OrderSummary;
 import javax.model.PricingSummary;
 import javax.model.Product;
 import javax.model.ProductQuantityMap;
@@ -20,10 +21,6 @@ public class ShoppingCart {
         add(product, 1);
     }
 
-    public double getCartPrice() {
-        return pricingService.getPricingSummary(products).getCartPrice();
-    }
-
     public void add(Product product, Integer quantity) {
         Optional<ProductQuantityMap> item = products.stream()
                 .filter(p -> p.getProduct().equals(product))
@@ -41,7 +38,15 @@ public class ShoppingCart {
         return products;
     }
 
+    public Double getCartPrice() {
+        return pricingService.getPricingSummary(products).getCartPrice();
+    }
+
     public PricingSummary getPricingSummary() {
         return pricingService.getPricingSummary(products);
+    }
+
+    public OrderSummary getOrderSummary() {
+        return new OrderSummary(products, pricingService.getPricingSummary(products));
     }
 }
