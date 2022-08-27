@@ -1,9 +1,7 @@
 package javax;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ShoppingCart {
     private final Set<ProductQuantityMap> products = new HashSet<>();
@@ -36,38 +34,7 @@ public class ShoppingCart {
         products.add(new ProductQuantityMap(product, quantity));
     }
 
-    private static class ProductQuantityMap {
-        private final Product product;
-        private Integer quantity;
-
-        ProductQuantityMap(Product product, Integer quantity) {
-            this.product = product;
-            this.quantity = quantity;
-        }
-
-        Product getProduct() {
-            return product;
-        }
-
-        Integer getQuantity() {
-            return quantity;
-        }
-
-        void addQuantity(Integer quantity) {
-            this.quantity += quantity;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ProductQuantityMap that = (ProductQuantityMap) o;
-            return product.equals(that.product);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(product);
-        }
+    public Set<ProductQuantityMap> getProducts() {
+        return products;
     }
 }
