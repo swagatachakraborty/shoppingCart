@@ -1,24 +1,27 @@
 package javax;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import javax.model.PricingSummary;
+import javax.model.Product;
+import javax.model.ProductQuantityMap;
+import javax.service.PricingService;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 public class ShoppingCart {
     private final Set<ProductQuantityMap> products = new HashSet<>();
+    private final PricingService pricingService;
+
+    public ShoppingCart(PricingService pricingService) {
+        this.pricingService = pricingService;
+    }
 
     public void add(Product product) {
         add(product, 1);
     }
 
-    public double getPrice() {
-        Double cartPrice = products.stream()
-                .map(p -> p.getProduct().getPrice() * p.getQuantity())
-                .reduce(0d, Double::sum);
-        return roundUp(cartPrice);
-    }
-
-    private double roundUp(Double cartPrice) {
-        return Math.round(cartPrice * 100) / 100d;
+    public double getCartPrice() {
+        return pricingService.getPricingSummary(products).getCartPrice();
     }
 
     public void add(Product product, Integer quantity) {
@@ -36,5 +39,9 @@ public class ShoppingCart {
 
     public Set<ProductQuantityMap> getProducts() {
         return products;
+    }
+
+    public PricingSummary getPricingSummary() {
+        return pricingService.getPricingSummary(products);
     }
 }

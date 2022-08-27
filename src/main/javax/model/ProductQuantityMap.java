@@ -1,4 +1,4 @@
-package javax;
+package javax.model;
 
 import java.util.Objects;
 
@@ -6,7 +6,7 @@ public class ProductQuantityMap {
     private final Product product;
     private Integer quantity;
 
-    ProductQuantityMap(Product product, Integer quantity) {
+    public ProductQuantityMap(Product product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
     }
@@ -19,7 +19,7 @@ public class ProductQuantityMap {
         return quantity;
     }
 
-    void addQuantity(Integer quantity) {
+    public void addQuantity(Integer quantity) {
         this.quantity += quantity;
     }
 

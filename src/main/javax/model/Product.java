@@ -1,4 +1,4 @@
-package javax;
+package javax.model;
 
 import java.util.Objects;
 
