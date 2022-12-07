@@ -7,6 +7,7 @@ import javax.model.Product;
 import javax.model.ProductQuantityMap;
 import javax.service.PricingService;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -133,5 +134,39 @@ public class ShoppingCartTest {
         assertEquals(doveSoap, orderSummary.getProducts().get(1).getProduct());
         assertEquals(doveSoapPrice, orderSummary.getProducts().get(1).getProduct().getPrice());
         assertEquals(2, orderSummary.getProducts().get(1).getQuantity());
+    }
+
+    @Test
+    public void shouldApplyOfferOfBuyTwoGet1DoveSoapFree() {
+        ShoppingCart cartWithOffer = new ShoppingCart(new PricingService(12.5d, Arrays.asList("Dove Soap")));
+        cartWithOffer.add(doveSoap, 3);
+
+        assertEquals(89.98, cartWithOffer.getPricingSummary().getCartPrice());
+        assertEquals(39.99, cartWithOffer.getPricingSummary().getTotalDiscount());
+        assertEquals(10.00, cartWithOffer.getPricingSummary().getTotalSalesTax());
+    }
+
+    @Test
+    public void shouldApplyOfferOfBuyTwoGet1DoveSoapFreeFor5DoveSoap() {
+        ShoppingCart cartWithOffer = new ShoppingCart(new PricingService(12.5d, Arrays.asList("Dove Soap")));
+        cartWithOffer.add(doveSoap, 5);
+
+        assertEquals(179.96, cartWithOffer.getPricingSummary().getCartPrice());
+        assertEquals(39.99, cartWithOffer.getPricingSummary().getTotalDiscount());
+        assertEquals(20.00, cartWithOffer.getPricingSummary().getTotalSalesTax());
+    }
+
+    @Test
+    public void shouldApplyOfferOfBuyTwoGet1DoveSoapFreeFor3DoveSoap2Deo() {
+        Double axeDeoPrice = 89.99;
+        Product axeDeo = new Product("Axe Deo", axeDeoPrice);
+
+        ShoppingCart cartWithOffer = new ShoppingCart(new PricingService(12.5d, Arrays.asList("Dove Soap")));
+        cartWithOffer.add(doveSoap, 3);
+        cartWithOffer.add(axeDeo, 2);
+
+        assertEquals(292.46, cartWithOffer.getPricingSummary().getCartPrice());
+        assertEquals(39.99, cartWithOffer.getPricingSummary().getTotalDiscount());
+        assertEquals(32.50, cartWithOffer.getPricingSummary().getTotalSalesTax());
     }
 }
